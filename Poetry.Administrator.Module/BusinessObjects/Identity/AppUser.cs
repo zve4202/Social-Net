@@ -4,8 +4,11 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using DevExpress.ExpressApp;
+using DevExpress.ExpressApp.DC;
 using DevExpress.ExpressApp.Security;
+using DevExpress.Persistent.Base;
 using DevExpress.Persistent.BaseImpl.PermissionPolicy;
+using DevExpress.Persistent.Validation;
 using DevExpress.Xpo;
 
 namespace Poetry.Administrator.Module.BusinessObjects
@@ -34,6 +37,26 @@ namespace Poetry.Administrator.Module.BusinessObjects
             result.ProviderUserKey = providerUserKey;
             result.User = this;
             return result;
+        }
+
+        private string _name;
+        [XafDisplayName("Имя"), ToolTip("Имя на ОК")]
+        [Index(0)]
+        [RuleRequiredField(DefaultContexts.Save)]
+        public string Name
+        {
+            get { return _name; }
+            set => SetPropertyValue(nameof(Name), ref _name, value);
+        }
+
+        private string _okId;
+        [XafDisplayName("Id на ОК"), ToolTip("Id на ОК")]
+        [Index(1)]
+        [RuleRequiredField(DefaultContexts.Save)]
+        public string OkID
+        {
+            get { return _okId; }
+            set => SetPropertyValue(nameof(OkID), ref _okId, value);
         }
     }
 }
