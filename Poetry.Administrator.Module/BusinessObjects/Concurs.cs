@@ -16,14 +16,12 @@ using System.Text;
 namespace Poetry.Administrator.Module.BusinessObjects
 {
     [DefaultClassOptions]
-    //[ImageName("BO_Contact")]
-    //[DefaultProperty("DisplayMemberNameForLookupEditorsOfThisType")]
+    [ImageName("BO_Contact")]
+    [DefaultProperty(nameof(Name))]
     [DefaultListViewOptions(MasterDetailMode.ListViewOnly, false, NewItemRowPosition.None)]
     // [Persistent("DatabaseTableName")]
-    public class Concurs : XPCustomObject
-    { // Inherit from a different class to provide a custom primary key, concurrency and deletion behavior, etc. (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument113146.aspx).
-        // Use CodeRush to create XPO classes and properties with a few keystrokes.
-        // https://docs.devexpress.com/CodeRushForRoslyn/118557
+    public class Concurs : LinkObject
+    {
         public Concurs(Session session)
             : base(session)
         {
@@ -33,6 +31,7 @@ namespace Poetry.Administrator.Module.BusinessObjects
             base.AfterConstruction();
             // Place your initialization code here (https://documentation.devexpress.com/eXpressAppFramework/CustomDocument112834.aspx).
         }
+
         //private string _PersistentProperty;
         //[XafDisplayName("My display name"), ToolTip("My hint message")]
         //[ModelDefault("EditMask", "(000)-00"), Index(0), VisibleInListView(false)]
@@ -49,34 +48,33 @@ namespace Poetry.Administrator.Module.BusinessObjects
         //    this.PersistentProperty = "Paid";
         //}
 
-        int _id;
-
-        [VisibleInListView(false)]
-        public int Id
-        {
-            get => _id;
-            set => SetPropertyValue(nameof(Id), ref _id, value);
-        }
-
-        private string _name;
-
         [XafDisplayName("Название"), ToolTip("Название конкурса")]
-        [Index(0)]
-        [Persistent("Name"), RuleRequiredField(DefaultContexts.Save)]
+        [RuleRequiredField(DefaultContexts.Save)]
         public string Name
         {
-            get { return _name; }
-            set => SetPropertyValue(nameof(Name), ref _name, value);
+            get => base.Name;
+            set => base.Name = value;
         }
+
 
         private Guid _owner;
         [XafDisplayName("Ведущий"), ToolTip("Ведущий конкурса")]
-        [Index(1)]
+        [Index(2)]
         public Guid Owner
         {
             get { return _owner; }
             set => SetPropertyValue(nameof(Owner), ref _owner, value);
         }
+
+        private Group _group;
+        [XafDisplayName("Группа"), ToolTip("Конкурс в группе")]
+        [Index(3)]
+        public Group Group
+        {
+            get { return _group; }
+            set => SetPropertyValue(nameof(Group), ref _group, value);
+        }
+
 
     }
 }
